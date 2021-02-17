@@ -1,5 +1,12 @@
 # tshock_server_rest_client
 
+## Working both Local and External Address
+
+Just make sure your server address is non-https or https.
+
+And check the REST port number.
+
+You should provide to the applicativo the server REST PORT, not the server PORT that connect via Terraria game client
 
 <details>
 <summary>App Client Screenshots</summary>
