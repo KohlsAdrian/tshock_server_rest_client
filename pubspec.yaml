@@ -2,7 +2,7 @@ name: tshock_server_rest_client
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.1.0+0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,12 +10,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.0
+  cupertino_icons:
   get:
+  shared_preferences:
   tshock_server_rest:
     git:
       url: git@github.com:KohlsAdrian/tshock_server_rest.git
       ref: master
 
+
+
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/

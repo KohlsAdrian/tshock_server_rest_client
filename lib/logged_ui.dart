@@ -11,30 +11,89 @@ import 'package:tshock_server_rest_client/pages/users_ui.dart';
 import 'package:tshock_server_rest_client/pages/world_ui.dart';
 
 class LoggedUI extends StatelessWidget {
-  Widget _button(String text, Function tap) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: InkWell(
-        onTap: tap,
-        child: Card(
-          clipBehavior: Clip.hardEdge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+  final _items = [
+    {
+      'title': 'Players',
+      'description': 'Kill, Kick, Ban, Mute and Unmute online players',
+      'icon': Icons.person,
+      'page': PlayersUI(),
+    },
+    {
+      'title': 'Users',
+      'description': 'Create user, delete, update group and password',
+      'icon': Icons.person_search,
+      'page': UsersUI(),
+    },
+    {
+      'title': 'World',
+      'description':
+          'See detailed informations about the world and manage events.',
+      'icon': Icons.filter_hdr_sharp,
+      'page': WorldUI(),
+    },
+    {
+      'title': 'Bans',
+      'description':
+          'See detailed information about banned users and unban users.',
+      'icon': Icons.block,
+      'page': BansUI(),
+    },
+    {
+      'title': 'Groups',
+      'description': 'Manage groups and edit permissions.',
+      'icon': Icons.group,
+      'page': GroupsUI(),
+    },
+    {
+      'title': 'Server',
+      'description':
+          'See detailed information about the server. Run any commands or shutdown. it',
+      'icon': Icons.storage,
+      'page': ServerUI(),
+    },
+  ];
+
+  Widget _itemList(Map<String, dynamic> item) {
+    String title = item['title'];
+    String description = item['description'];
+    Widget page = item['page'];
+    return InkWell(
+      onTap: () => Get.to(() => page),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Icon(
+              item['icon'],
+              size: 40,
+            ),
           ),
-          color: Colors.indigo,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Text(
-              text.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
+          Container(
+            width: MediaQuery.of(Get.context).size.width * 0.8,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title.toUpperCase(),
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    description,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -46,26 +105,17 @@ class LoggedUI extends StatelessWidget {
       builder: (controller) => Scaffold(
         appBar: AppBar(
           title: Text('Hello ${controller.userName}'),
+          actions: [
+            IconButton(
+              onPressed: () => Get.offAll(() => Home()),
+              icon: Icon(Icons.exit_to_app),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          heroTag: 'tshockRestExit',
-          onPressed: () => Get.off(Home()),
-          label: Text('Exit'),
-          icon: Icon(Icons.exit_to_app),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _button('Players', () => Get.to(() => PlayersUI())),
-              _button('Users', () => Get.to(() => UsersUI())),
-              _button('World', () => Get.to(() => WorldUI())),
-              _button('Bans', () => Get.to(() => BansUI())),
-              _button('Groups', () => Get.to(() => GroupsUI())),
-              _button('Server', () => Get.to(() => ServerUI())),
-            ],
-          ),
+        body: ListView.separated(
+          itemCount: _items.length,
+          separatorBuilder: (context, index) => Divider(),
+          itemBuilder: (context, index) => _itemList(_items[index]),
         ),
       ),
     );

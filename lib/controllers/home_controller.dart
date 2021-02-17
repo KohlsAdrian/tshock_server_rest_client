@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tshock_server_rest/tshock_server_rest_server.dart';
 import 'package:tshock_server_rest_client/logged_ui.dart';
 
@@ -18,8 +19,26 @@ class HomeController extends GetxController {
   TextEditingController get tecPort => _tecPort;
   TextEditingController get tecToken => _tecToken;
 
+  @override
+  void onInit() async {
+    super.onInit();
+
+    SharedPreferences.getInstance().then((prefs) {
+      String address = prefs.getString('address') ?? '';
+      int port = prefs.getInt('port') ?? 7878;
+      String token = prefs.getString('token') ?? '';
+      _isHttps = prefs.getBool('isHttps') ?? false;
+
+      _tecAddress.text = address;
+      _tecPort.text = port.toString();
+      _tecToken.text = token;
+
+      update();
+    });
+  }
+
   void toggleHttps([bool isHttps]) {
-    if (isHttps != null) _isHttps = isHttps;
+    _isHttps = isHttps ?? !_isHttps;
     update();
   }
 
@@ -36,13 +55,21 @@ class HomeController extends GetxController {
 
       final test = await TShockServerRESTServer.instance.testToken() ?? {};
       authed = test['status'] == '200';
+
+      if (authed) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('address', ip);
+        prefs.setInt('port', port);
+        prefs.setString('token', token);
+        prefs.setBool('isHttps', _isHttps);
+
+        Get.offAll(() => LoggedUI());
+      }
     } catch (e) {
       print(e);
     }
 
     _loading = false;
     update();
-
-    if (authed) Get.off(() => LoggedUI());
   }
 }

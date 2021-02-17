@@ -24,6 +24,33 @@ class PlayersUI extends StatelessWidget {
         ),
       );
 
+  Widget _actions(PlayersController controller, TShockUser user) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buttonAction(
+                  'Mute', Icons.volume_off, () => controller.mute(user.name)),
+              buttonAction('Unmute', Icons.volume_up,
+                  () => controller.unmute(user.name)),
+            ],
+          ),
+          Divider(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buttonAction(
+                  'Kill', Icons.mood_bad, () => controller.kill(user.name)),
+              buttonAction(
+                  'Kick', Icons.do_not_step, () => controller.kick(user.name)),
+            ],
+          ),
+          Divider(height: 10),
+          buttonAction('Ban', Icons.close, () => controller.ban(user.name)),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PlayersController>(
@@ -32,53 +59,49 @@ class PlayersUI extends StatelessWidget {
         appBar: AppBar(
           title: Text('Players'),
         ),
-        body: ListView.builder(
-          padding: EdgeInsets.all(20),
-          itemCount: controller.users.length,
-          itemBuilder: (context, index) {
-            TShockUser user = controller.users[index];
-            return Padding(
-              padding: EdgeInsets.all(5),
-              child: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Colors.teal[300],
+        body: controller.users.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(50),
+                  child: Text('Nothing here at the moment.'),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      title: Text(user.id + ' - ' + user.name),
-                      subtitle: Text('group: ' + user.group),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.all(20),
+                itemCount: controller.users.length,
+                itemBuilder: (context, index) {
+                  TShockUser user = controller.users[index];
+                  return Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Colors.teal[300],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          ListTile(
+                            title: Text(user.id + ' - ' + user.name),
+                            subtitle: Text('group: ' + user.group),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('${user.name} - Actions'),
+                                  content: _actions(controller, user),
+                                ),
+                              );
+                            },
+                          ),
+                          Icon(Icons.arrow_right_alt),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        buttonAction('Mute', Icons.volume_off,
-                            () => controller.mute(user.name)),
-                        buttonAction('UnMute', Icons.volume_up,
-                            () => controller.unmute(user.name)),
-                      ],
-                    ),
-                    Divider(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        buttonAction('Kill', Icons.mood_bad,
-                            () => controller.kill(user.name)),
-                        buttonAction('Kick', Icons.do_not_step,
-                            () => controller.kick(user.name)),
-                        buttonAction('Ban', Icons.close,
-                            () => controller.ban(user.name)),
-                      ],
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
     );
   }

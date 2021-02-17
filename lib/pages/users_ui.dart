@@ -14,6 +14,7 @@ class UsersUI extends StatelessWidget {
           title: Text('Users'),
         ),
         floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'usersUi',
           onPressed: controller.createUser,
           label: Text('Create User'),
           icon: Row(
@@ -23,48 +24,55 @@ class UsersUI extends StatelessWidget {
             ],
           ),
         ),
-        body: ListView.builder(
-          itemCount: controller.users.length,
-          itemBuilder: (context, index) {
-            TShockUser user = controller.users[index];
-            String id = user.id;
-            String name = user.name;
-            String group = user.group;
-            return Padding(
-              padding: EdgeInsets.all(5),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(20.0),
+        body: controller.users.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(50),
+                  child: Text('Nothing here at the moment.'),
                 ),
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(Get.context).size.width * 0.8,
-                      child: ListTile(
-                        title: Text('$id - $name'),
-                        subtitle: Text('group: $group'),
+              )
+            : ListView.builder(
+                itemCount: controller.users.length,
+                itemBuilder: (context, index) {
+                  TShockUser user = controller.users[index];
+                  String id = user.id;
+                  String name = user.name;
+                  String group = user.group;
+                  return Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.cyan,
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(Get.context).size.width * 0.8,
+                            child: ListTile(
+                              title: Text('$id - $name'),
+                              subtitle: Text('group: $group'),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  icon: Icon(Icons.edit, size: 40),
+                                  onPressed: () => controller.updateUser(user)),
+                              IconButton(
+                                  icon: Icon(Icons.delete, size: 40),
+                                  onPressed: () => controller.deleteUser(user)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                            icon: Icon(Icons.edit, size: 40),
-                            onPressed: () => controller.updateUser(user)),
-                        IconButton(
-                            icon: Icon(Icons.delete, size: 40),
-                            onPressed: () => controller.deleteUser(user)),
-                      ],
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
     );
   }

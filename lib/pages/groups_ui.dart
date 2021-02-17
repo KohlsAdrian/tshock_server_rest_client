@@ -35,6 +35,7 @@ class GroupsUI extends StatelessWidget {
           length: 3,
           child: Scaffold(
             floatingActionButton: FloatingActionButton.extended(
+              heroTag: 'groupsUpdateUi',
               onPressed: () =>
                   Get.off(() => UpdateGroupPermissionsUI(mTShockGroup)),
               icon: Icon(Icons.edit),
@@ -78,26 +79,41 @@ class GroupsUI extends StatelessWidget {
       init: GroupsController(),
       builder: (controller) => Scaffold(
         appBar: AppBar(title: Text('Groups')),
-        body: ListView.builder(
-          itemCount: controller.groups.length,
-          itemBuilder: (context, index) {
-            TShockGroup group = controller.groups[index];
-            String name = group.name;
-            String parent = group.parent;
-
-            List<int> chatColor =
-                group.chatColor.split(',').map((e) => int.parse(e)).toList();
-            Color color =
-                Color.fromARGB(1, chatColor[0], chatColor[1], chatColor[2]);
-
-            return ListTile(
-              tileColor: color,
-              title: Text('$name ($parent)'),
-              subtitle: Text('Press to see permissions'),
-              onTap: () => _seePermissions(group, controller),
-            );
-          },
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'groupsUi',
+          onPressed: () => Get.to(() => UpdateGroupPermissionsUI(null)),
+          icon: Icon(Icons.group_add),
+          label: Text('Create Group'),
         ),
+        body: controller.groups.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(50),
+                  child: Text('Nothing here at the moment.'),
+                ),
+              )
+            : ListView.builder(
+                itemCount: controller.groups.length,
+                itemBuilder: (context, index) {
+                  TShockGroup group = controller.groups[index];
+                  String name = group.name;
+                  String parent = group.parent;
+
+                  List<int> chatColor = group.chatColor
+                      .split(',')
+                      .map((e) => int.parse(e))
+                      .toList();
+                  Color color = Color.fromARGB(
+                      1, chatColor[0], chatColor[1], chatColor[2]);
+
+                  return ListTile(
+                    tileColor: color,
+                    title: Text('$name ($parent)'),
+                    subtitle: Text('Press to see permissions'),
+                    onTap: () => _seePermissions(group, controller),
+                  );
+                },
+              ),
       ),
     );
   }
@@ -109,17 +125,20 @@ class UpdateGroupPermissionsUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String name = tShockGroup.name;
-    String parent = tShockGroup.parent;
+    String name = tShockGroup?.name ?? '';
+    String parent = tShockGroup?.parent ?? '';
     Size size = MediaQuery.of(context).size;
     double width = size.width;
     return GetBuilder<UpdateGroupController>(
       init: UpdateGroupController(tShockGroup),
       builder: (controller) => Scaffold(
         appBar: AppBar(
-          title: Text('Update Group: $name ($parent)'),
+          title: Text(tShockGroup == null
+              ? 'Create Group'
+              : 'Update Group: $name ($parent)'),
         ),
         floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'groupsUi',
           onPressed: controller.save,
           label: Text('Save'),
           icon: Icon(Icons.save),
@@ -128,6 +147,23 @@ class UpdateGroupPermissionsUI extends StatelessWidget {
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
+              if (tShockGroup == null)
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.lime, width: 5.0),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: controller.tecGroupName,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        labelText: 'Group Name',
+                      ),
+                    ),
+                  ),
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

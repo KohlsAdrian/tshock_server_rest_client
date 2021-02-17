@@ -21,36 +21,43 @@ class BansUI extends StatelessWidget {
         appBar: AppBar(
           title: Text('Bans'),
         ),
-        body: ListView.builder(
-          padding: EdgeInsets.all(20),
-          itemCount: controller.users.length,
-          itemBuilder: (context, index) {
-            TShockBannedUser user = controller.users[index];
-            String name = user.name;
-            String whobanned = user.banningUser;
-            return Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Colors.red[200],
-                  ),
-                  child: ListTile(
-                    title: Text('$name'),
-                    subtitle: Text('banned by: $whobanned'),
-                    onTap: () => _banDetails(user),
-                  ),
+        body: controller.users.isEmpty
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(50),
+                  child: Text('Nothing here at the moment.'),
                 ),
-                Icon(
-                  Icons.arrow_right_alt_sharp,
-                  size: 40,
-                ),
-              ],
-            );
-          },
-        ),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.all(20),
+                itemCount: controller.users.length,
+                itemBuilder: (context, index) {
+                  TShockBannedUser user = controller.users[index];
+                  String name = user.name;
+                  String whobanned = user.banningUser;
+                  return Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.red[200],
+                        ),
+                        child: ListTile(
+                          title: Text('$name'),
+                          subtitle: Text('banned by: $whobanned'),
+                          onTap: () => _banDetails(user),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_right_alt_sharp,
+                        size: 40,
+                      ),
+                    ],
+                  );
+                },
+              ),
       ),
     );
   }
@@ -91,6 +98,7 @@ class BannedUserDetailsUI extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(20),
             child: FloatingActionButton.extended(
+              heroTag: 'bansUi',
               onPressed: _unban,
               label: Text(
                 'Unban',

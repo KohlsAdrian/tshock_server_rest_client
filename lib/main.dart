@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       debugShowMaterialGrid: false,
       theme: ThemeData(
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
     );
@@ -27,66 +27,76 @@ class Home extends StatelessWidget {
     return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (controller) => Scaffold(
-        floatingActionButton: controller.loading
-            ? null
-            : FloatingActionButton.extended(
-                heroTag: 'tshockRestLogin',
-                onPressed: controller.login,
-                label: Text('Login'),
-                icon: Icon(Icons.login),
-              ),
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'tshockRestLogin',
+          onPressed: controller.login,
+          label: Text('Login'),
+          icon: Icon(Icons.login),
+        ),
         appBar: AppBar(
           title: Text('TShock Server Client'),
         ),
         body: controller.loading
             ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: EdgeInsets.all(20),
+            : SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
+                    InkWell(
                       onTap: controller.toggleHttps,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Is the server address HTTPS ?'.toUpperCase()),
+                            Checkbox(
+                                value: controller.isHttps,
+                                onChanged: (value) =>
+                                    controller.toggleHttps(value))
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      child: Column(
                         children: [
-                          Text('Is the server address HTTPS ?'.toUpperCase()),
-                          Checkbox(
-                              value: controller.isHttps,
-                              onChanged: (value) =>
-                                  controller.toggleHttps(value))
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: width * 0.5,
+                                child: TextFormField(
+                                  controller: controller.tecAddress,
+                                  decoration: InputDecoration(
+                                    labelText: 'Server Address',
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * 0.3,
+                                child: TextFormField(
+                                  controller: controller.tecPort,
+                                  decoration: InputDecoration(
+                                    labelText: 'REST API port',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TextFormField(
+                            controller: controller.tecToken,
+                            maxLines: 2,
+                            decoration: InputDecoration(
+                              labelText: 'REST API Token',
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: width * 0.5,
-                          child: TextFormField(
-                            controller: controller.tecAddress,
-                            decoration: InputDecoration(
-                              labelText: 'Server Address',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: width * 0.3,
-                          child: TextFormField(
-                            controller: controller.tecPort,
-                            decoration: InputDecoration(
-                              labelText: 'REST API port',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    TextFormField(
-                      controller: controller.tecToken,
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        labelText: 'REST API Token',
-                      ),
-                    ),
+                    SizedBox(height: 50),
+                    Image.asset('assets/tshock.png'),
+                    Image.asset('assets/terraria.png'),
                   ],
                 ),
               ),

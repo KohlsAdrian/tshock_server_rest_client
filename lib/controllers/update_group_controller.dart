@@ -6,20 +6,29 @@ import 'package:tshock_server_rest/tshock_server_rest_groups.dart';
 
 class UpdateGroupController extends GetxController {
   UpdateGroupController(TShockGroup tShockGroup) {
-    _groupName = tShockGroup.name;
-    _parent = tShockGroup.parent;
-    _permissions = List.of(tShockGroup.permissions);
+    _groupName = tShockGroup?.name ?? '';
+    _parent = tShockGroup?.parent ?? '';
+    _permissions = List.of(tShockGroup?.permissions ?? []);
 
-    List<int> colors =
-        tShockGroup.chatColor.split(',').map((e) => int.parse(e)).toList();
+    List<int> colors = tShockGroup == null
+        ? [255, 255, 255]
+        : tShockGroup.chatColor.split(',').map((e) => int.parse(e)).toList();
 
     _red = colors[0];
     _green = colors[1];
     _blue = colors[2];
+
+    if (tShockGroup == null) {
+      _isCreate = true;
+    }
   }
+
+  bool _isCreate = false;
+
   String _groupName;
   String _parent;
 
+  TextEditingController _tecGroupName = TextEditingController();
   TextEditingController _tecPermissions = TextEditingController();
   TextEditingController _tecParent = TextEditingController();
 
@@ -30,6 +39,8 @@ class UpdateGroupController extends GetxController {
   int _blue = 0;
 
   List<String> get permissions => _permissions;
+
+  TextEditingController get tecGroupName => _tecGroupName;
   TextEditingController get tecPermissions => _tecPermissions;
   TextEditingController get tecParent => _tecParent;
 
@@ -57,6 +68,15 @@ class UpdateGroupController extends GetxController {
         tecPermissions.text.replaceAll(' ', '').replaceAll('\n', '').split(',');
     String newParent = tecParent.text;
 
+    if (_isCreate)
+      await TShockServerRESTGroups.instance.create(
+        _tecGroupName.text,
+        newParent,
+        newPermissions,
+        _red,
+        _green,
+        _blue,
+      );
     await TShockServerRESTGroups.instance.update(
       _groupName,
       parent: newParent,
