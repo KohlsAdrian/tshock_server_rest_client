@@ -6,7 +6,7 @@ Just make sure your server address is non-https or https.
 
 And check the REST port number.
 
-You should provide to the applicattion the server REST PORT, not the server PORT that connect via Terraria game client
+You should provide to the app the server REST PORT, not the server PORT that connect via Terraria game client
 
 <details>
 <summary>App Client Screenshots</summary>
