@@ -8,7 +8,7 @@ And check the REST port number.
 
 You should provide to the app the server REST PORT, not the server PORT that connect via Terraria game client
 
-![Google Play](https://play.google.com/store/apps/details?id=br.com.adriankohls.tshock_server_rest_client)
+[Google Play](https://play.google.com/store/apps/details?id=br.com.adriankohls.tshock_server_rest_client)
 
 <details>
 <summary>App Client Screenshots</summary>
