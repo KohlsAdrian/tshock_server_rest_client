@@ -10,6 +10,16 @@ You should provide to the app the server REST PORT, not the server PORT that con
 
 [Google Play](https://play.google.com/store/apps/details?id=br.com.adriankohls.tshock_server_rest_client)
 
+
+## What you should do
+
+Things you need: ([see this how-to](https://tshock.readme.io/reference#rest-api-endpoints))
+
+* IP Address
+* Check if Address is HTTPS or not
+* Check if TShock server is REST enabled 
+* Have a TOKEN as superadmin, preferable a static token
+
 <details>
 <summary>App Client Screenshots</summary>
     
