@@ -1,16 +1,29 @@
 # tshock_server_rest_client
 
-A new Flutter project.
+## Working both Local and External Address
 
-## Getting Started
+Just make sure your server address is non-https or https.
 
-This project is a starting point for a Flutter application.
+And check the REST port number.
 
-A few resources to get you started if this is your first Flutter project:
+You should provide to the app the server REST PORT, not the server PORT that connect via Terraria game client
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<details>
+<summary>App Client Screenshots</summary>
+    
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.09.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.12.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.16.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.18.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.23.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.26.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.28.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.33.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.36.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.38.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.43.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.52.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.41.58.png)
+   ![](https://github.com/KohlsAdrian/tshock_server_rest_client/blob/master/sss/Simulator%20Screen%20Shot%20-%20iPhone%208%20Plus%20-%202021-02-17%20at%2014.42.00.png)
+    
+</details>
